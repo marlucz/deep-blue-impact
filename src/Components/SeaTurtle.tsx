@@ -6,58 +6,122 @@ Source: https://sketchfab.com/3d-models/model-72b-juvenile-green-sea-turtle-c90a
 Title: Model 72B - Juvenile Green Sea Turtle
 */
 
-import * as THREE from "three";
-import { useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from "react";
+import { useGLTF, useAnimations } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
+import {
+  AnimationClip,
+  Bone,
+  Group,
+  MeshPhysicalMaterial,
+  MeshStandardMaterial,
+  SkinnedMesh,
+} from "three";
 
 type GLTFResult = GLTF & {
   nodes: {
-    Object_40: THREE.Mesh;
-    Object_41: THREE.Mesh;
-    Object_43: THREE.Mesh;
+    Object_40: SkinnedMesh;
+    Object_41: SkinnedMesh;
+    Object_43: SkinnedMesh;
+    _rootJoint: Bone;
   };
   materials: {
-    greeneye: THREE.MeshStandardMaterial;
-    greeneyeouter: THREE.MeshStandardMaterial;
-    greenbody: THREE.MeshPhysicalMaterial;
+    greeneye: MeshStandardMaterial;
+    greeneyeouter: MeshPhysicalMaterial;
+    greenbody: MeshPhysicalMaterial;
   };
 };
 
-export function SeaTurtle(props: JSX.IntrinsicElements["group"]) {
-  const { nodes, materials } = useGLTF("/sea_turtle.glb") as GLTFResult;
+const SWIM_CYCLE_ACTION = "Swim Cycle";
+
+export const SeaTurtle = (props: JSX.IntrinsicElements["group"]) => {
+  const group = useRef<Group>(null);
+  const { nodes, materials, animations } = useGLTF(
+    "/juvenile_green_sea_turtle.glb"
+  ) as GLTFResult;
+  const { actions } = useAnimations<AnimationClip>(animations, group);
+
+  useEffect(() => {
+    if (!actions[SWIM_CYCLE_ACTION]) return;
+    actions[SWIM_CYCLE_ACTION].reset();
+  });
 
   return (
-    <group {...props} dispose={null}>
-      <group position={[1.589, 4.583, -2.578]} rotation={[-0.32, 2.91, -2.6]}>
-        <group rotation={[Math.PI / 2, 0, 0]} scale={0.038}>
+    <group
+      ref={group}
+      {...props}
+      dispose={null}
+      position={[1.589, 4.583, -2.578]}
+      rotation={[-0.32, 2.91, -2.6]}
+    >
+      <group name="Sketchfab_Scene">
+        <group
+          name="Sketchfab_model"
+          rotation={[Math.PI / 2, 0, 0]}
+          scale={0.038}
+        >
           <group
+            name="green_016_round5changes_johnsonfbx"
             position={[-2.266, 2.989, -2.188]}
             rotation={[-Math.PI / 2, 0, -3.117]}
-            scale={100}
           >
-            <mesh
-              castShadow
-              receiveShadow
-              geometry={nodes.Object_40.geometry}
-              material={materials.greeneye}
-            />
-            <mesh
-              castShadow
-              receiveShadow
-              geometry={nodes.Object_41.geometry}
-              material={materials.greeneyeouter}
-            />
-            <mesh
-              castShadow
-              receiveShadow
-              geometry={nodes.Object_43.geometry}
-              material={materials.greenbody}
-            />
+            <group name="Object_2">
+              <group name="RootNode">
+                <group
+                  name="green_juvenilearmature"
+                  position={[-2.266, 2.989, -2.188]}
+                  rotation={[-Math.PI / 2, 0, -3.117]}
+                  scale={100}
+                >
+                  <group name="Object_5">
+                    <primitive object={nodes._rootJoint} />
+                    <skinnedMesh
+                      name="Object_40"
+                      geometry={nodes.Object_40.geometry}
+                      material={materials.greeneye}
+                      skeleton={nodes.Object_40.skeleton}
+                    />
+                    <skinnedMesh
+                      name="Object_41"
+                      geometry={nodes.Object_41.geometry}
+                      material={materials.greeneyeouter}
+                      skeleton={nodes.Object_41.skeleton}
+                    />
+                    <skinnedMesh
+                      name="Object_43"
+                      geometry={nodes.Object_43.geometry}
+                      material={materials.greenbody}
+                      skeleton={nodes.Object_43.skeleton}
+                    />
+                    <group
+                      name="Object_39"
+                      rotation={[-Math.PI / 2, 0, 0]}
+                      scale={100}
+                    />
+                    <group
+                      name="Object_42"
+                      rotation={[-Math.PI / 2, 0, 0]}
+                      scale={100}
+                    />
+                  </group>
+                </group>
+                <group
+                  name="green_juvenileeye"
+                  rotation={[-Math.PI / 2, 0, 0]}
+                  scale={100}
+                />
+                <group
+                  name="green_juvenilemesh"
+                  rotation={[-Math.PI / 2, 0, 0]}
+                  scale={100}
+                />
+              </group>
+            </group>
           </group>
         </group>
       </group>
     </group>
   );
-}
+};
 
-useGLTF.preload("/sea_turtle.glb");
+useGLTF.preload("/juvenile_green_sea_turtle.glb");
