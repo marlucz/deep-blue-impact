@@ -9,7 +9,11 @@ export const Reef = () => {
     )
   );
 
-  return <primitive object={scene} />;
+  return (
+    <group>
+      <primitive object={scene} />;
+    </group>
+  );
 };
 
 useGLTF.preload("/reef_light.glb");

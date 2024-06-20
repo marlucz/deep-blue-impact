@@ -1,9 +1,4 @@
-import {
-  Environment,
-  OrbitControls,
-  PerspectiveCamera,
-  Sparkles,
-} from "@react-three/drei";
+import { Environment, OrbitControls, Sparkles } from "@react-three/drei";
 import {
   BrightnessContrast,
   EffectComposer,
@@ -12,6 +7,9 @@ import {
   Vignette,
 } from "@react-three/postprocessing";
 import { useControls } from "leva";
+import { PerspectiveCamera, editable as e } from "@theatre/r3f";
+import { Mesh } from "three";
+import { useRef } from "react";
 
 export const Settings = () => {
   const { x, y, z, zoom } = useControls("Camera", {
@@ -27,9 +25,10 @@ export const Settings = () => {
     angle: { min: 0, max: 1, value: 0.1, step: 0.01, label: "angle" },
   });
 
+  const cameraTargetRef = useRef<Mesh>(null);
+
   return (
     <>
-      {/* ENV  */}
       <color attach="background" args={[0x74ccf4]} />
       <Environment files={"./env_map.hdr"}>
         <color attach="background" args={[0x74ccf4]} />
@@ -47,16 +46,24 @@ export const Settings = () => {
         decay={0}
       />
       <fog attach="fog" args={["#74ccf4", 5, 12]} />
-      {/* CONTROLS */}
       <PerspectiveCamera
         makeDefault
         position={[x, y, z]}
         fov={45}
         zoom={zoom}
         far={20}
+        theatreKey={"Camera"}
+        lookAt={cameraTargetRef}
       />
-      <OrbitControls target={[0.91, 4.5, -2.5]} makeDefault />
-      {/* EFFECTS */}
+      <e.mesh
+        theatreKey="Camera Target"
+        visible="editor"
+        ref={cameraTargetRef}
+        position={[0.91, 4.5, -2.5]}
+      >
+        <octahedronGeometry args={[0.1, 0]} />
+        <meshPhongMaterial color="yellow" />
+      </e.mesh>
       <Sparkles
         count={100}
         scale={[10, 6, 10]}

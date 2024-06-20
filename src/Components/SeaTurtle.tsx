@@ -6,6 +6,8 @@ Source: https://sketchfab.com/3d-models/model-72b-juvenile-green-sea-turtle-c90a
 Title: Model 72B - Juvenile Green Sea Turtle
 */
 
+import { editable as e } from "@theatre/r3f";
+
 import { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
@@ -47,12 +49,13 @@ export const SeaTurtle = (props: JSX.IntrinsicElements["group"]) => {
   });
 
   return (
-    <group
+    <e.group
       ref={group}
       {...props}
       dispose={null}
       position={[1.589, 4.583, -2.578]}
       rotation={[-0.32, 2.91, -2.6]}
+      theatreKey="Sea Turtle"
     >
       <group name="Sketchfab_Scene">
         <group
@@ -120,7 +123,7 @@ export const SeaTurtle = (props: JSX.IntrinsicElements["group"]) => {
           </group>
         </group>
       </group>
-    </group>
+    </e.group>
   );
 };
 
