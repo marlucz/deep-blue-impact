@@ -36,7 +36,11 @@ type GLTFResult = GLTF & {
 
 const SWIM_CYCLE_ACTION = "Swim Cycle";
 
-export const SeaTurtle = (props: JSX.IntrinsicElements["group"]) => {
+type TurtleProps = JSX.IntrinsicElements["group"] & {
+  isAnimating: boolean;
+};
+
+export const SeaTurtle = ({ isAnimating, ...props }: TurtleProps) => {
   const group = useRef<Group>(null);
   const { nodes, materials, animations } = useGLTF(
     "/juvenile_green_sea_turtle.glb"
@@ -44,9 +48,12 @@ export const SeaTurtle = (props: JSX.IntrinsicElements["group"]) => {
   const { actions } = useAnimations<AnimationClip>(animations, group);
 
   useEffect(() => {
-    if (!actions[SWIM_CYCLE_ACTION]) return;
-    actions[SWIM_CYCLE_ACTION].reset();
-  });
+    setTimeout(() => {
+      if (!actions[SWIM_CYCLE_ACTION]) return;
+      actions[SWIM_CYCLE_ACTION].play();
+      actions[SWIM_CYCLE_ACTION].paused = !isAnimating;
+    });
+  }, [isAnimating]);
 
   return (
     <e.group

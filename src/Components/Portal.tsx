@@ -1,63 +1,58 @@
-import { useLoader } from "@react-three/fiber";
-import { useMemo } from "react";
-import { DoubleSide, Euler, Vector3 } from "three";
-import { SVGLoader } from "three/examples/jsm/Addons.js";
-import { editable as e } from "@theatre/r3f";
+import { Color, Euler, Vector3 } from "three";
 
-// might use a plane geometry with a shader material instead though
+import { editable as e } from "@theatre/r3f";
+import { TransitionNames } from "../App";
+import { Frame } from "./Frame";
+import { useMemo } from "react";
 
 export type PortalProps = {
   position?: Vector3;
   rotation?: Euler;
+  currentScreen: TransitionNames;
+};
+
+const portalWidthMapping = {
+  Intro: 0.6,
+  Home: 0.6,
+  Bleaching: 0.6,
+  Pollution: 0.8,
+  Overfishing: 0.6,
+  Habitat: 0.6,
+  Choice: 1,
+};
+const portalHeightMapping = {
+  Intro: 1,
+  Home: 1,
+  Bleaching: 1,
+  Pollution: 1,
+  Overfishing: 1,
+  Habitat: 1,
+  Choice: 1.6,
 };
 
 export const Portal = ({
-  position = new Vector3(1.38, 4.05, -3.15),
+  position = new Vector3(1.6, 4.5, -3.15),
   rotation = new Euler(0, 0, 0),
+  currentScreen,
 }: PortalProps) => {
-  const {
-    paths: [path],
-  } = useLoader(SVGLoader, "/square.svg");
-
-  const geometry = useMemo(
-    () =>
-      SVGLoader.pointsToStroke(path.subPaths[0].getPoints(), {
-        ...path.userData!.style,
-        width: 45,
-        height: 80,
-      }),
-    [path]
+  const height = useMemo(
+    () => portalHeightMapping[currentScreen],
+    [currentScreen]
   );
 
-  // const { scale, x, y, z, rotX, rotY, rotZ } = useControls("Square", {
-  //   scale: { value: 0.01, min: 0, max: 10, step: 0.01 },
-  //   x: { value: 1.38, min: -10, max: 10, step: 0.01 },
-  //   y: { value: 4.05, min: -10, max: 10, step: 0.01 },
-  //   z: { value: -3.15, min: -10, max: 10, step: 0.01 },
-  //   rotX: { value: 0, min: -10, max: 10, step: 0.01 },
-  //   rotY: { value: 0, min: -10, max: 10, step: 0.01 },
-  //   rotZ: { value: 0, min: -10, max: 10, step: 0.01 },
-  // });
-
-  if (!geometry) return null;
+  const width = useMemo(
+    () => portalWidthMapping[currentScreen],
+    [currentScreen]
+  );
 
   return (
-    <group>
-      <e.mesh
-        geometry={geometry}
-        position={position}
-        rotation={rotation}
-        scale={0.01}
-        theatreKey="Portal"
-      >
-        {/* <planeGeometry args={[width,]}/> */}
-        <meshStandardMaterial
-          emissive={"#ffce00"}
-          emissiveIntensity={2}
-          color="#ffce00"
-          side={DoubleSide}
-        />
-      </e.mesh>
-    </group>
+    <e.group
+      theatreKey="Portal"
+      position={position}
+      rotation={rotation}
+      scale={1}
+    >
+      <Frame color={new Color("#ffce00")} width={width} height={height} />
+    </e.group>
   );
 };

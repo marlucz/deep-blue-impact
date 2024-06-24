@@ -1,308 +1,292 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { TransitionNames } from "../App";
+import { NauticButton } from "../Components/NauticButton";
+import TitleWithDesc from "../Components/TitleWithDesc";
 
 export type UIProps = {
-  currentScreen: string;
-  onScreenChange: (value: string) => void;
+  currentScreen: TransitionNames;
+  targetScreen: TransitionNames;
+  onScreenChange: (value: TransitionNames) => void;
   isAnimating: boolean;
 };
 
-export const UI = ({ currentScreen, onScreenChange, isAnimating }: UIProps) => {
+export const UI = ({
+  currentScreen,
+  targetScreen,
+  onScreenChange,
+  isAnimating,
+}: UIProps) => {
   return (
-    <motion.main
-      className="fixed inset-0 z-10"
-      animate={isAnimating ? "" : currentScreen}
-    >
-      <section
-        className={`absolute inset-0 grid grid-cols-4 transition-opacity duration-1000 content-center ${
-          currentScreen === "Intro" && !isAnimating
-            ? ""
-            : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <motion.h1
-          initial={{
-            y: -80,
-            opacity: 0,
-          }}
-          variants={{
-            Intro: {
-              y: 0,
-              opacity: 1,
-              transition: {
-                delay: 0.5,
-                duration: 1.2,
-              },
-            },
-          }}
-          className="flex flex-col items-end uppercase font-bold text-[9rem] leading-tight col-start-3"
-          style={{
-            WebkitTextStroke: "2px #e5faff",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          <span>save</span>
-          <span>the</span>
-          <span
-            className="tracking-wide"
-            style={{
-              WebkitTextFillColor: "#e5faff",
-            }}
-          >
-            deep
-          </span>
-        </motion.h1>
-        <motion.div
-          className="flex items-center gap-3 mt-2"
-          initial={{
-            y: 80,
-            opacity: 0,
-          }}
-          variants={{
-            Home: {
-              y: 0,
-              opacity: 1,
-              transition: {
-                delay: 0.2,
-                duration: 1.2,
-              },
-            },
-          }}
-        >
-          <button
-            onClick={() => onScreenChange("Castle")}
-            className="bg-gray-400 bg-opacity-50 p-3 rounded-full text-white font-medium"
-          >
-            Discover the impact
-          </button>
-        </motion.div>
-      </section>
-      {/* <section
-        className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-1000 ${
-          currentScreen === "Bleaching" && !isAnimating
-            ? ""
-            : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <motion.img
-          src="/vite.svg"
-          alt="Medieval Town"
-          className="w-32"
-          initial={{
-            y: -80,
-            opacity: 0,
-          }}
-          variants={{
-            Home: {
-              y: 0,
-              opacity: 0.9,
-              transition: {
-                delay: 1,
-                duration: 1.2,
-              },
-            },
-          }}
-        />
-        <h1 className="text-7xl text-white opacity-90 font-extrabold">
-          Medieval Town
-        </h1>
-        <motion.div
-          className="flex items-center gap-3 mt-2"
-          initial={{
-            y: 80,
-            opacity: 0,
-          }}
-          variants={{
-            Home: {
-              y: 0,
-              opacity: 1,
-              transition: {
-                delay: 0.2,
-                duration: 1.2,
-              },
-            },
-          }}
-        >
-          <button
-            onClick={() => onScreenChange("Castle")}
-            className="bg-gray-400 bg-opacity-50 p-3 rounded-full text-white font-medium"
-          >
-            Visit the historic castle
-          </button>
-          <button
-            onClick={() => onScreenChange("Windmill")}
-            className="bg-gray-400 bg-opacity-50 p-3 rounded-full text-white font-medium"
-          >
-            Discover the town windmill
-          </button>
-        </motion.div>
-      </section> */}
+    <main className="fixed inset-0 z-10">
       <motion.section
-        animate={isAnimating ? "" : currentScreen}
-        className={`absolute inset-0 flex flex-col items-start justify-center p-10 transition-opacity duration-1000 ${
-          currentScreen === "Castle" && !isAnimating
-            ? ""
-            : "opacity-0 pointer-events-none"
+        className={`absolute inset-0 z-10 grid grid-cols-12 content-center ${
+          isAnimating && "pointer-events-none"
         }`}
       >
-        <div className="md:max-w-2xl">
-          <motion.h1
-            className="text-7xl text-white opacity-90 font-extrabold -ml-1"
-            initial={{
-              y: 80,
-              opacity: 0,
-            }}
-            variants={{
-              Castle: {
-                y: 0,
-                opacity: 1,
+        <AnimatePresence mode="sync">
+          {[currentScreen, targetScreen].every(
+            (screen) => screen === TransitionNames.Home
+          ) && (
+            <motion.div
+              key={TransitionNames.Home}
+              className="flex flex-col col-start-8 col-span-3"
+              exit={{
+                y: -1000,
+                opacity: 0,
                 transition: {
-                  delay: 0.2,
-                  duration: 1.2,
+                  duration: 2,
+                  delay: 0.5,
+                  ease: "easeInOut",
                 },
-              },
-            }}
-          >
-            Castle
-          </motion.h1>
-          <motion.p
-            className="text-white mt-2"
-            initial={{
-              y: 80,
-              opacity: 0,
-            }}
-            variants={{
-              Castle: {
-                y: 0,
-                opacity: 1,
-                transition: {
-                  delay: 0.6,
-                  duration: 1.2,
-                },
-              },
-            }}
-          >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            quae voluptatum, quia, quibusdam, voluptates voluptate quos quod
-            voluptatibus quas doloribus quidem. Quisquam quae voluptatum, quia,
-            quibusdam, voluptates voluptate quos quod voluptatibus quas
-            doloribus quidem.
-          </motion.p>
-          <motion.button
-            onClick={() => onScreenChange("Home")}
-            className="bg-gray-400 bg-opacity-50  p-3 mt-3 rounded-full text-white font-medium"
-            initial={{
-              y: 80,
-              opacity: 0,
-            }}
-            variants={{
-              Castle: {
-                y: 0,
-                opacity: 1,
-                transition: {
-                  delay: 1,
-                  duration: 1.2,
-                },
-              },
-            }}
-          >
-            Back to the entrance
-          </motion.button>
-        </div>
-      </motion.section>
-      <motion.section
-        animate={isAnimating ? "" : currentScreen}
-        className={`absolute inset-0 flex flex-col items-end justify-center p-10 transition-opacity duration-1000 ${
-          currentScreen === "Windmill" && !isAnimating
-            ? ""
-            : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <div className="md:max-w-2xl">
-          <motion.h1
-            className="text-7xl text-white opacity-90 font-extrabold -ml-1"
-            initial={{
-              y: 80,
-              opacity: 0,
-            }}
-            variants={{
-              Windmill: {
-                y: 0,
-                opacity: 1,
-                transition: {
-                  delay: 0.2,
-                  duration: 1.2,
-                },
-              },
-            }}
-          >
-            Windmill
-          </motion.h1>
-          <motion.p
-            className="text-white mt-2"
-            initial={{
-              y: 80,
-              opacity: 0,
-            }}
-            variants={{
-              Windmill: {
-                y: 0,
-                opacity: 1,
-                transition: {
-                  delay: 0.6,
-                  duration: 1.2,
-                },
-              },
-            }}
-          >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            quae voluptatum, quia, quibusdam, voluptates voluptate quos quod
-            voluptatibus quas doloribus quidem. Quisquam quae voluptatum, quia,
-            quibusdam, voluptates voluptate quos quod voluptatibus quas
-            doloribus quidem.
-          </motion.p>
-          <motion.button
-            onClick={() => onScreenChange("Home")}
-            className="bg-gray-400 bg-opacity-50  p-3 mt-3 rounded-full text-white font-medium"
-            initial={{
-              y: 80,
-              opacity: 0,
-            }}
-            variants={{
-              Windmill: {
-                y: 0,
-                opacity: 1,
-                transition: {
-                  delay: 1,
-                  duration: 1.2,
-                },
-              },
-            }}
-          >
-            Back to the entrance
-          </motion.button>
-        </div>
-      </motion.section>
-    </motion.main>
+              }}
+            >
+              <h1
+                className="flex flex-col items-end uppercase font-bold text-[9rem] leading-tight"
+                style={{
+                  WebkitTextStroke: "2px #e5faff",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                <motion.span
+                  initial={{
+                    y: -80,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    y: 0,
+                    opacity: 1,
+                    transition: {
+                      duration: 1.5,
+                    },
+                  }}
+                >
+                  save
+                </motion.span>
+                <motion.span
+                  initial={{
+                    y: -80,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    y: 0,
+                    opacity: 1,
+                    transition: {
+                      delay: 0.3,
+                      duration: 1.2,
+                    },
+                  }}
+                >
+                  the
+                </motion.span>
+                <motion.span
+                  initial={{
+                    x: 80,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    x: 0,
+                    opacity: 1,
+                    transition: {
+                      delay: 0.8,
+                      duration: 0.4,
+                    },
+                  }}
+                  className="tracking-wide"
+                  style={{
+                    WebkitTextFillColor: "#e5faff",
+                  }}
+                >
+                  deep
+                </motion.span>
+              </h1>
+              <div className="absolute bottom-10 left-0 w-full z-15 flex justify-center items-center">
+                <NauticButton
+                  text="Discover the impact"
+                  onClick={() => onScreenChange(TransitionNames.Bleaching)}
+                />
+              </div>
+            </motion.div>
+          )}
 
-    // <div className="absolute inset-0 grid grid-cols-4 transition-opacity duration-1000 content-center pointer-events-none">
-    //   <h1
-    //     className="flex flex-col items-end uppercase font-bold text-[9rem] leading-tight col-start-3"
-    //     style={{
-    //       WebkitTextStroke: "2px #e5faff",
-    //       WebkitTextFillColor: "transparent",
-    //     }}
-    //   >
-    //     <span>save</span>
-    //     <span>the</span>
-    //     <span
-    //       className="tracking-wide"
-    //       style={{
-    //         WebkitTextFillColor: "#e5faff",
-    //       }}
-    //     >
-    //       deep
-    //     </span>
-    //   </h1>
-    // </div>
+          {[currentScreen, targetScreen].every(
+            (screen) => screen === TransitionNames.Bleaching
+          ) && (
+            <motion.div
+              key={TransitionNames.Bleaching}
+              className="flex flex-col col-start-8 col-span-4"
+              exit={{
+                x: 1000,
+                opacity: 0,
+                transition: {
+                  duration: 2,
+                  delay: 0.5,
+                  ease: "easeInOut",
+                },
+              }}
+            >
+              <TitleWithDesc
+                title={TransitionNames.Bleaching}
+                text="Dive into the eerie beauty of coral reefs that have lost their
+                vibrant colors. Coral bleaching occurs when corals, stressed by
+                rising ocean temperatures and pollution, expel the algae that
+                provide them with food and color. This phenomenon transforms the
+                corals into ghostly white structures and disrupts entire marine
+                ecosystems that depend on them."
+                direction="y"
+                value={500}
+              />
+              <NauticButton
+                text="Go to Pollution"
+                onClick={() => onScreenChange(TransitionNames.Pollution)}
+              />
+            </motion.div>
+          )}
+          {[currentScreen, targetScreen].every(
+            (screen) => screen === TransitionNames.Pollution
+          ) && (
+            <motion.div
+              key={TransitionNames.Pollution}
+              className="flex flex-col col-start-2 col-span-4"
+              exit={{
+                x: -500,
+                opacity: 0,
+                transition: {
+                  duration: 2,
+                  delay: 0.5,
+                  ease: "easeInOut",
+                },
+              }}
+            >
+              <TitleWithDesc
+                title={TransitionNames.Pollution}
+                text="Explore the depths of our oceans and witness the pervasive
+                impact of water pollution. From plastic waste to chemical
+                runoff, human activities have introduced countless pollutants
+                into marine environments. These pollutants harm wildlife,
+                disrupt ecosystems, and create massive patches of floating
+                debris, affecting marine creatures through entanglement and
+                ingestion."
+                direction="x"
+                value={-500}
+              />
+
+              <NauticButton
+                text="Go to Overfishing"
+                onClick={() => onScreenChange(TransitionNames.Overfishing)}
+              />
+            </motion.div>
+          )}
+          {[currentScreen, targetScreen].every(
+            (screen) => screen === TransitionNames.Overfishing
+          ) && (
+            <motion.div
+              key={TransitionNames.Overfishing}
+              className="flex flex-col col-start-2 col-span-4"
+              exit={{
+                x: 1000,
+                opacity: 0,
+                transition: {
+                  duration: 2,
+                  delay: 0.5,
+                  ease: "easeInOut",
+                },
+              }}
+            >
+              <TitleWithDesc
+                title={TransitionNames.Overfishing}
+                text="Navigate the stark reality of overfishing and its toll on marine
+                biodiversity. Overfishing depletes fish populations faster than
+                they can reproduce, leading to the collapse of entire fish
+                stocks. This disruption affects not only the marine food web but
+                also the millions of people who rely on fishing for their
+                livelihoods."
+                direction="y"
+                value={500}
+              />
+
+              <NauticButton
+                text="Go to Habitat Destruction"
+                onClick={() => onScreenChange(TransitionNames.Habitat)}
+              />
+            </motion.div>
+          )}
+          {[currentScreen, targetScreen].every(
+            (screen) => screen === TransitionNames.Habitat
+          ) && (
+            <motion.div
+              key={TransitionNames.Habitat}
+              className="flex flex-col col-start-2 col-span-4"
+              exit={{
+                x: 1000,
+                opacity: 0,
+                transition: {
+                  duration: 2,
+                  delay: 0.5,
+                  ease: "easeInOut",
+                },
+              }}
+            >
+              <TitleWithDesc
+                title={TransitionNames.Habitat}
+                text=" Observe the critical issue of marine habitat destruction and its
+                far-reaching consequences. Human activities such as coastal
+                development, pollution, and destructive fishing practices are
+                eroding vital habitats like mangroves, seagrass meadows, and
+                coral reefs. These habitats are essential for coastal
+                protection, biodiversity, and carbon sequestration."
+                direction="x"
+                value={-500}
+              />
+
+              <NauticButton
+                text="Make a Choice"
+                onClick={() => onScreenChange(TransitionNames.Choice)}
+              />
+            </motion.div>
+          )}
+          {[currentScreen, targetScreen].every(
+            (screen) => screen === TransitionNames.Choice
+          ) && (
+            <motion.div
+              key={TransitionNames.Choice}
+              className="flex flex-col col-span-full justify-between items-center h-screen py-10"
+              initial={{
+                x: -500,
+              }}
+              animate={{
+                x: 0,
+                transition: {
+                  duration: 1.25,
+                },
+              }}
+            >
+              <motion.h2
+                initial={{
+                  opacity: 0,
+                }}
+                animate={{
+                  opacity: 1,
+                  transition: {
+                    delay: 0.5,
+                    duration: 1.2,
+                  },
+                }}
+                exit={{
+                  opacity: 0,
+                }}
+                className="flex flex-col uppercase font-bold text-[6rem] leading-tight"
+              >
+                Which One Do You Choose
+              </motion.h2>
+
+              <NauticButton
+                text="Explore Again"
+                onClick={() => onScreenChange(TransitionNames.Home)}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.section>
+    </main>
   );
 };
