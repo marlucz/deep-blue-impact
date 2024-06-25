@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useLoader } from "@react-three/fiber";
+import { useMemo } from "react";
 import { Color, DoubleSide } from "three";
+import { SVGLoader } from "three/examples/jsm/Addons.js";
 
 export type FrameProps = {
   width: number;
@@ -8,33 +10,30 @@ export type FrameProps = {
 };
 
 export const Frame = ({ width, height, color }: FrameProps) => {
-  const [resolution, setResolution] = useState([
-    window.innerWidth,
-    window.innerHeight,
-  ]);
+  const {
+    paths: [path],
+  } = useLoader(SVGLoader, "/square.svg");
 
-  useEffect(() => {
-    const handleResize = () => {
-      setResolution([window.innerWidth, window.innerHeight]);
-    };
+  const geometry = useMemo(() => {
+    const points = path.subPaths[0].getPoints();
+    const strokeGeometry = SVGLoader.pointsToStroke(points, {
+      ...path.userData!.style,
+      width,
+      height,
+      color,
+      strokeWidth: 0.05,
+    });
 
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+    return strokeGeometry;
+  }, [path]);
 
   return (
-    <mesh>
-      <planeGeometry args={[width, height]} />
-      {/* @ts-expect-error it's there */}
-      <frameShader
-        uColor={color}
-        resolution={resolution}
+    <mesh geometry={geometry}>
+      <meshStandardMaterial
+        emissive={color}
+        emissiveIntensity={2}
+        color={color}
         side={DoubleSide}
-        transparent
-        attach={"material"}
       />
     </mesh>
   );

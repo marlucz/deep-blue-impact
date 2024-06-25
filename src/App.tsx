@@ -2,21 +2,15 @@ import { SheetProvider } from "@theatre/r3f";
 import "./App.css";
 
 import Scene from "./Scene/Scene";
-import { getProject, val } from "@theatre/core";
+import { getProject } from "@theatre/core";
 import extension from "@theatre/r3f/dist/extension";
 import studio from "@theatre/studio";
 import { UI } from "./UI/UI";
 import { useEffect, useRef, useState } from "react";
-import { Canvas, extend, useFrame } from "@react-three/fiber";
+import { Canvas, extend } from "@react-three/fiber";
 import { ACESFilmicToneMapping } from "three";
-import { Leva, useControls } from "leva";
-import {
-  Loader,
-  Scroll,
-  ScrollControls,
-  useProgress,
-  useScroll,
-} from "@react-three/drei";
+import { Leva } from "leva";
+import { Loader, useProgress } from "@react-three/drei";
 import { FrameShader } from "./Shaders/FrameShader";
 import projectState from "./assets/theatre-project-state.json";
 
@@ -97,9 +91,7 @@ const App = () => {
   return (
     <>
       <Loader />
-
       <Leva collapsed />
-
       <UI
         currentScreen={currentScreen}
         targetScreen={targetScreen}
@@ -119,6 +111,7 @@ const App = () => {
           <Scene
             isAnimating={currentScreen !== targetScreen}
             currentScreen={currentScreen}
+            targetScreen={targetScreen}
           />
         </SheetProvider>
       </Canvas>

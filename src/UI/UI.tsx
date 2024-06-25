@@ -113,7 +113,7 @@ export const UI = ({
           ) && (
             <motion.div
               key={TransitionNames.Bleaching}
-              className="flex flex-col col-start-8 col-span-4"
+              className="flex flex-col col-start-8 col-span-4 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-10"
               exit={{
                 x: 1000,
                 opacity: 0,
@@ -146,7 +146,7 @@ export const UI = ({
           ) && (
             <motion.div
               key={TransitionNames.Pollution}
-              className="flex flex-col col-start-2 col-span-4"
+              className="flex flex-col col-start-2 col-span-4 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-10"
               exit={{
                 x: -500,
                 opacity: 0,
@@ -181,7 +181,7 @@ export const UI = ({
           ) && (
             <motion.div
               key={TransitionNames.Overfishing}
-              className="flex flex-col col-start-2 col-span-4"
+              className="flex flex-col col-start-2 col-span-4 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-10"
               exit={{
                 x: 1000,
                 opacity: 0,
@@ -215,7 +215,7 @@ export const UI = ({
           ) && (
             <motion.div
               key={TransitionNames.Habitat}
-              className="flex flex-col col-start-2 col-span-4"
+              className="flex flex-col col-start-2 col-span-4 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 p-10"
               exit={{
                 x: 1000,
                 opacity: 0,

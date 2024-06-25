@@ -9,17 +9,23 @@ import { TransitionNames } from "../App";
 const Scene = ({
   isAnimating,
   currentScreen,
+  targetScreen,
 }: {
   isAnimating: boolean;
   currentScreen: TransitionNames;
+  targetScreen: TransitionNames;
 }) => {
   return (
     <>
       <Settings />
       <Suspense fallback={null}>
-        <Reef />
+        <Reef key={"reef"} />
         <SeaTurtle isAnimating={isAnimating} />
-        <Portal currentScreen={currentScreen} />
+        <Portal
+          currentScreen={currentScreen}
+          isAnimating={isAnimating}
+          targetScreen={targetScreen}
+        />
       </Suspense>
     </>
   );

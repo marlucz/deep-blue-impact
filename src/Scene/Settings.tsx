@@ -1,5 +1,6 @@
-import { Environment, OrbitControls, Sparkles } from "@react-three/drei";
+import { Environment, Sparkles } from "@react-three/drei";
 import {
+  Bloom,
   BrightnessContrast,
   EffectComposer,
   Noise,
@@ -62,7 +63,7 @@ export const Settings = () => {
         position={[0.91, 4.5, -2.5]}
       >
         <octahedronGeometry args={[0.1, 0]} />
-        <meshPhongMaterial color="yellow" />
+        <meshStandardMaterial roughness={1} color="yellow" />
       </e.mesh>
       <Sparkles
         count={100}
@@ -76,6 +77,12 @@ export const Settings = () => {
         <Noise opacity={0.05} />
         <BrightnessContrast brightness={-0.03} contrast={-0.05} />
         <ToneMapping averageLuminance={0.5} middleGrey={3} />
+        <Bloom
+          intensity={2}
+          luminanceThreshold={0.7}
+          luminanceSmoothing={0.1}
+          mipmapBlur
+        />
       </EffectComposer>
     </>
   );
