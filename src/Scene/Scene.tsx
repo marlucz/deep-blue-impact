@@ -17,7 +17,7 @@ const Scene = ({
 }) => {
   return (
     <>
-      <Settings />
+      <Settings isAnimating={isAnimating} />
       <Suspense fallback={null}>
         <Reef key={"reef"} />
         <SeaTurtle isAnimating={isAnimating} />

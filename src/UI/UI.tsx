@@ -41,7 +41,7 @@ export const UI = ({
               }}
             >
               <h1
-                className="flex flex-col items-end uppercase font-bold text-[9rem] leading-tight"
+                className="flex flex-col items-end uppercase font-bold text-[9rem] leading-tight font-['Raleway']"
                 style={{
                   WebkitTextStroke: "2px #e5faff",
                   WebkitTextFillColor: "transparent",
@@ -274,9 +274,9 @@ export const UI = ({
                 exit={{
                   opacity: 0,
                 }}
-                className="flex flex-col uppercase font-bold text-[6rem] leading-tight"
+                className="flex flex-col font-bold text-[6rem] leading-tight"
               >
-                Which One Do You Choose
+                Which Reef Do You Choose?
               </motion.h2>
 
               <NauticButton

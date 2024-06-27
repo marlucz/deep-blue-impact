@@ -30,43 +30,47 @@ export const ReefImpacted = () => {
     "/sand_ao.jpg",
   ]);
 
+  const metalTextures = useTexture(["/rust_diffuse.jpg"]);
+
   const { scene, nodes } = useGLTF("/reef_impact.glb");
   useLayoutEffect(() => {
     Object.values(nodes).forEach((node) => {
       node.visible =
         IMPACTED_VISIBLE_STARTS_WITH.some((str) => node.name.startsWith(str)) ||
         Math.random() > 0.7;
-      node.receiveShadow = node.castShadow = true;
     });
 
-    for (const sandTexture of sandTextures) {
-      sandTexture.wrapS = sandTexture.wrapT = RepeatWrapping;
-      sandTexture.repeat.set(2, 2);
+    for (const texture of [...metalTextures, ...sandTextures]) {
+      texture.wrapS = texture.wrapT = RepeatWrapping;
+      texture.repeat.set(2, 2);
     }
   });
 
-  const [diffuse, roughness, normal, ao] = sandTextures;
+  const [sandDiffuse, sandRoughness, sandNormal, sandAo] = sandTextures;
+  const [metalDiffuse] = metalTextures;
 
   useEffect(() => {
     if (ref.current) {
       ref.current.traverse((node) => {
+        node.receiveShadow = node.castShadow = true;
+
         if (node.name === "Sand_Plane") {
           const mesh = node as Mesh;
 
           mesh.material = new MeshStandardMaterial({
-            map: diffuse,
-            roughnessMap: roughness,
-            normalMap: normal,
-            aoMap: ao,
+            map: sandDiffuse,
+            roughnessMap: sandRoughness,
+            normalMap: sandNormal,
+            aoMap: sandAo,
           });
         } else if (node.name.startsWith("Coral_Wall")) {
           const mesh = node as Mesh;
 
           mesh.material = new MeshStandardMaterial({
-            map: diffuse,
-            roughnessMap: roughness,
-            normalMap: normal,
-            aoMap: ao,
+            map: sandDiffuse,
+            roughnessMap: sandRoughness,
+            normalMap: sandNormal,
+            aoMap: sandAo,
             // make it look like rock
             color: 0xeeeeee,
             aoMapIntensity: 2,
@@ -75,10 +79,10 @@ export const ReefImpacted = () => {
           const mesh = node as Mesh;
 
           mesh.material = new MeshStandardMaterial({
-            map: diffuse,
-            roughnessMap: roughness,
-            normalMap: normal,
-            aoMap: ao,
+            map: sandDiffuse,
+            roughnessMap: sandRoughness,
+            normalMap: sandNormal,
+            aoMap: sandAo,
             // pick some sandy rock color
             color: 0xeeeeee,
             aoMapIntensity: 1.5,
@@ -91,13 +95,29 @@ export const ReefImpacted = () => {
             metalness: 0.5,
             color: 0xffffff * Math.random(),
           });
+        } else if (node.name.startsWith("Metal")) {
+          const mesh = node as Mesh;
+
+          mesh.material = new MeshStandardMaterial({
+            map: metalDiffuse,
+            roughness: 0.8,
+            metalness: 0.5,
+          });
+        } else if (node.name.startsWith("Glass")) {
+          const mesh = node as Mesh;
+
+          mesh.material = new MeshStandardMaterial({
+            roughness: 0.2,
+            metalness: 0.5,
+            color: 0x092e20,
+          });
         } else {
           const mesh = node as Mesh;
 
           mesh.material = new MeshStandardMaterial({
-            roughnessMap: roughness,
-            normalMap: normal,
-            aoMap: ao,
+            roughnessMap: sandRoughness,
+            normalMap: sandNormal,
+            aoMap: sandAo,
             aoMapIntensity: 1.5,
           });
         }

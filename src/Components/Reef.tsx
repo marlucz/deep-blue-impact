@@ -4,7 +4,6 @@ import { useLoader } from "@react-three/fiber";
 import {
   Group,
   Mesh,
-  MeshPhongMaterial,
   MeshStandardMaterial,
   RepeatWrapping,
   TextureLoader,
@@ -21,16 +20,15 @@ export const Reef = () => {
   ]);
   const { scene, nodes } = useGLTF("/reef_light.glb");
 
-  useLayoutEffect(() =>
+  useLayoutEffect(() => {
     Object.values(nodes).forEach((node) => {
       node.receiveShadow = node.castShadow = true;
-
-      for (const sandTexture of sandTextures) {
-        sandTexture.wrapS = sandTexture.wrapT = RepeatWrapping;
-        sandTexture.repeat.set(2, 2);
-      }
-    })
-  );
+    });
+    for (const sandTexture of sandTextures) {
+      sandTexture.wrapS = sandTexture.wrapT = RepeatWrapping;
+      sandTexture.repeat.set(2, 2);
+    }
+  });
 
   const [diffuse, roughness, normal, ao] = sandTextures;
 
