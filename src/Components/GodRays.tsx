@@ -1,67 +1,53 @@
-import { shaderMaterial, useTexture, useVideoTexture } from "@react-three/drei";
 import { extend, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import { useRef } from "react";
+import { ShaderMaterial } from "three";
+import { GodRaysShader } from "../Shaders/GodRaysShader";
+import { GodRaysShader2 } from "../Shaders/GodRaysShader2";
 
-// Define the GodraysMaterial shader
-const GodraysMaterial = shaderMaterial(
-  {
-    u_map: null,
-    u_resolution: [0, 0],
-    u_time: 0,
-  },
-  /* glsl */ `
-  void main() {
-    gl_Position = vec4(position, 1.);
-  }
-`,
-  /* glsl */ `
-    uniform sampler2D u_map;
-    uniform vec2 u_resolution;
-    uniform float u_time;
+extend({ GodRaysShader });
+extend({ GodRaysShader2 });
 
-    void main() {
-      vec2 uv = gl_FragCoord.xy / u_resolution;
-      vec3 col = texture2D(u_map, uv).rgb;
-
-      gl_FragColor = vec4(col, 1.0);
-    }
-  `
-);
-
-extend({ GodraysMaterial });
-
-export default function GodraysMaterialImpl() {
-  const videoTexture = useVideoTexture("/godrays.mp4");
-
+export default function GodRaysImpl() {
   const { size } = useThree();
 
-  const mat = useRef<THREE.ShaderMaterial>(null);
-
-  useEffect(() => {
-    // Access the video element and set playbackRate
-    if (videoTexture?.image) {
-      const video = videoTexture.image as HTMLVideoElement;
-      video.playbackRate = 0.4;
-      video.loop = true;
-    }
-  }, [videoTexture]);
+  const mat = useRef<ShaderMaterial>(null);
+  const mat2 = useRef<ShaderMaterial>(null);
 
   useFrame(({ clock }) => {
     if (mat.current) {
-      mat.current.uniforms.u_time.value = clock.getElapsedTime();
+      mat.current.uniforms.uTime.value = clock.getElapsedTime() * 1.5;
+    }
+    if (mat2.current) {
+      mat2.current.uniforms.uTime.value = clock.getElapsedTime();
     }
   });
 
   return (
-    // @ts-expect-error exists
-    <godraysMaterial
-      ref={mat}
-      depthWrite={false}
-      transparent
-      u_resolution={[size.width, size.height]}
-      u_map={videoTexture}
-      blending={2}
-    />
+    <>
+      <mesh position={[0, 0, -0.1]}>
+        <planeGeometry args={[2, 1]} />
+        {/* @ts-expect-error exists */}
+        <godRaysShader
+          uTime={0}
+          uResolution={[size.width, size.height]}
+          ref={mat}
+          transparent
+          depthWrite={false}
+          blending={4}
+        />
+      </mesh>
+      {/* <mesh position={[0, 0, -0.1]}>
+        <planeGeometry args={[2, 1]} />
+
+        <godRaysShader2
+          uTime={0}
+          uResolution={[size.width, size.height]}
+          ref={mat2}
+          transparent
+          depthWrite={false}
+          blending={4}
+        />
+      </mesh> */}
+    </>
   );
 }

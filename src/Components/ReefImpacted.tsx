@@ -9,17 +9,6 @@ import {
   TextureLoader,
 } from "three";
 
-const IMPACTED_VISIBLE_STARTS_WITH = [
-  "Sand_Plane",
-  "Coral_Tops",
-  "Coral_Wall",
-  "Plastic",
-  "Metal",
-  "Scene",
-  "Glass",
-  "Radio",
-];
-
 export const ReefImpacted = () => {
   const ref = useRef<Group>(null);
 
@@ -30,31 +19,22 @@ export const ReefImpacted = () => {
     "/sand_ao.jpg",
   ]);
 
-  const metalTextures = useTexture(["/rust_diffuse.jpg"]);
-
-  const { scene, nodes } = useGLTF("/reef_impact.glb");
+  const { scene } = useGLTF("/reef_impact.glb");
   useLayoutEffect(() => {
-    Object.values(nodes).forEach((node) => {
-      node.visible =
-        IMPACTED_VISIBLE_STARTS_WITH.some((str) => node.name.startsWith(str)) ||
-        Math.random() > 0.7;
-    });
-
-    for (const texture of [...metalTextures, ...sandTextures]) {
+    for (const texture of [...sandTextures]) {
       texture.wrapS = texture.wrapT = RepeatWrapping;
       texture.repeat.set(2, 2);
     }
   });
 
   const [sandDiffuse, sandRoughness, sandNormal, sandAo] = sandTextures;
-  const [metalDiffuse] = metalTextures;
 
   useEffect(() => {
     if (ref.current) {
       ref.current.traverse((node) => {
         node.receiveShadow = node.castShadow = true;
 
-        if (node.name === "Sand_Plane") {
+        if (node.name.includes("Sand")) {
           const mesh = node as Mesh;
 
           mesh.material = new MeshStandardMaterial({
@@ -94,22 +74,6 @@ export const ReefImpacted = () => {
             roughness: 0.5,
             metalness: 0.5,
             color: 0xffffff * Math.random(),
-          });
-        } else if (node.name.startsWith("Metal")) {
-          const mesh = node as Mesh;
-
-          mesh.material = new MeshStandardMaterial({
-            map: metalDiffuse,
-            roughness: 0.8,
-            metalness: 0.5,
-          });
-        } else if (node.name.startsWith("Glass")) {
-          const mesh = node as Mesh;
-
-          mesh.material = new MeshStandardMaterial({
-            roughness: 0.2,
-            metalness: 0.5,
-            color: 0x092e20,
           });
         } else {
           const mesh = node as Mesh;

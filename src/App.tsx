@@ -11,11 +11,8 @@ import { Canvas, extend } from "@react-three/fiber";
 import { ACESFilmicToneMapping } from "three";
 import { Leva } from "leva";
 import { Loader, useProgress } from "@react-three/drei";
-import { GodRaysShader } from "./Shaders/GodRaysShader";
-import projectState from "./assets/theatre-project-state.json";
-console.log("🚀 ~ projectState:", projectState);
 
-extend({ GodRaysShader });
+import projectState from "./assets/theatre-project-state.json";
 
 export type Transitions = Record<string, [from: number, to: number]>;
 export enum TransitionNames {
@@ -43,10 +40,7 @@ if (!isProd) {
   studio.initialize();
 }
 
-const project = getProject(
-  "SaveTheDeep",
-  isProd ? { state: projectState } : undefined
-);
+const project = getProject("SaveTheDeep", { state: projectState });
 const mainSheet = project.sheet("Main");
 
 const App = () => {

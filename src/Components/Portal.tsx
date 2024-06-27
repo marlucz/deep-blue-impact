@@ -6,6 +6,7 @@ import { Frame } from "./Frame";
 import { useRef } from "react";
 import { Environment, MeshPortalMaterial } from "@react-three/drei";
 import { ReefImpacted } from "./ReefImpacted";
+import { Trash } from "./Trash";
 
 export type PortalProps = {
   currentScreen: TransitionNames;
@@ -60,6 +61,7 @@ export const Portal = ({
             />
             <fog attach="fog" args={["#74ccf4", 5, 12]} />
             <ReefImpacted />
+            <Trash />
           </MeshPortalMaterial>
         </mesh>
       )}

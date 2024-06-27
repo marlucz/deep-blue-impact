@@ -4,6 +4,7 @@ import {
   Bloom,
   BrightnessContrast,
   EffectComposer,
+  GodRays,
   Noise,
   ToneMapping,
   Vignette,
@@ -25,35 +26,17 @@ export const Settings = ({ isAnimating }: { isAnimating: boolean }) => {
   });
 
   const { intensity, angle } = useControls("Lighting", {
-    intensity: { min: 0, max: 100, value: 20, step: 0.01, label: "intensity" },
+    intensity: { min: 0, max: 100, value: 30, step: 0.01, label: "intensity" },
     angle: { min: 0, max: 1, value: 1, step: 0.01, label: "angle" },
   });
 
-  const size = useThree((state) => state.size);
   const cameraTargetRef = useRef<Mesh>(null);
   const focusTargetVisualizerRef = useRef<Mesh>(null);
   const focusTargetRef = useRef(new Vector3(0, 0, 0));
 
-  const cameraFilterTexture = useTexture("/camerafilter.jpg");
-  const godRay1 = useRef<Mesh>(null);
-  const godRay2 = useRef<Mesh>(null);
-  const godRayShaderRef = useRef<ShaderMaterial>(null);
-
-  useFrame(({ clock, size }) => {
+  useFrame(() => {
     if (focusTargetVisualizerRef.current) {
       focusTargetRef.current.copy(focusTargetVisualizerRef.current.position);
-    }
-
-    if (godRay1.current && godRay2.current) {
-      godRay1.current.scale.y += Math.sin(clock.elapsedTime) * 0.0001;
-    }
-
-    if (godRayShaderRef.current) {
-      godRayShaderRef.current.uniforms.uTime.value = clock.getElapsedTime();
-      godRayShaderRef.current.uniforms.uResolution.value = [
-        size.width,
-        size.height,
-      ];
     }
   });
 
@@ -66,7 +49,7 @@ export const Settings = ({ isAnimating }: { isAnimating: boolean }) => {
       <hemisphereLight args={[0x74ccf4, "#c1e2f1", 5]} />;
       <hemisphereLight args={[0x74ccf4, 0, 1]} />;
       <directionalLight position={[5, 1, 0]} castShadow />
-      <spotLight
+      <e.spotLight
         position={[0, 10, 0]}
         intensity={intensity}
         color={0x74ccf4}
@@ -74,11 +57,9 @@ export const Settings = ({ isAnimating }: { isAnimating: boolean }) => {
         angle={angle}
         penumbra={1}
         decay={0}
+        theatreKey="Lighting"
       />
       <fog attach="fog" args={["#74ccf4", 5, 10]} />
-      <ScreenQuad>
-        <GodraysMaterialImpl />
-      </ScreenQuad>
       <PerspectiveCamera
         makeDefault
         position={[x, y, z]}
@@ -88,37 +69,7 @@ export const Settings = ({ isAnimating }: { isAnimating: boolean }) => {
         theatreKey={"Camera"}
         lookAt={cameraTargetRef}
       >
-        <mesh position={[0, 0, -0.1]} ref={godRay1}>
-          <planeGeometry args={[2, 1]} />
-          {/* @ts-expect-error exists */}
-          <godRaysShader
-            uTime={0}
-            uResolution={[size.width, size.height]}
-            ref={godRayShaderRef}
-            transparent
-            opacity={0.5}
-            depthWrite={false}
-            blending={4}
-          />
-        </mesh>
-        {/* <mesh position={[0, 0.02, -0.1]} ref={godRay2}>
-          <planeGeometry args={[0.2, 0.2]} />
-          <meshStandardMaterial
-            color={0xe5faff}
-            map={cameraFilterTexture}
-            transparent
-            opacity={0.1}
-          />
-        </mesh>
-        <mesh position={[0, 0.04, -0.1]} ref={godRay2}>
-          <planeGeometry args={[0.2, 0.2]} />
-          <meshStandardMaterial
-            color={0xe5faff}
-            map={cameraFilterTexture}
-            transparent
-            opacity={0.3}
-          />
-        </mesh> */}
+        <GodraysMaterialImpl />
       </PerspectiveCamera>
       <e.mesh
         theatreKey="Camera Target"

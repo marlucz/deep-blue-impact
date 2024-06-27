@@ -35,7 +35,7 @@ export const Reef = () => {
   useEffect(() => {
     if (ref.current) {
       ref.current.traverse((node) => {
-        if (node.name === "Sand_Plane") {
+        if (node.name.includes("Sand")) {
           const mesh = node as Mesh;
 
           mesh.material = new MeshStandardMaterial({
