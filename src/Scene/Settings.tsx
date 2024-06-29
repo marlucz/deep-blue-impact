@@ -1,22 +1,21 @@
-import { Environment, ScreenQuad, useTexture } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import {
   Autofocus,
   Bloom,
   BrightnessContrast,
   EffectComposer,
-  GodRays,
   Noise,
   ToneMapping,
   Vignette,
 } from "@react-three/postprocessing";
 import { useControls } from "leva";
 import { PerspectiveCamera, editable as e } from "@theatre/r3f";
-import { Mesh, ShaderMaterial, Vector3 } from "three";
+import { Mesh, Vector3 } from "three";
 import { useRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import GodraysMaterialImpl from "../Components/GodRays";
 
-export const Settings = ({ isAnimating }: { isAnimating: boolean }) => {
+export const Settings = () => {
   const { x, y, z, zoom } = useControls("Camera", {
     x: { min: -20, max: 20, value: 1.18, step: 0.01, label: "x" },
     y: { min: -20, max: 20, value: 4.46, step: 0.01, label: "y" },

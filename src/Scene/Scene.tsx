@@ -18,7 +18,7 @@ const Scene = ({
 }) => {
   return (
     <>
-      <Settings isAnimating={isAnimating} />
+      <Settings />
       <Suspense fallback={null}>
         <Reef key={"reef"} />
         {(currentScreen === TransitionNames.Intro ||

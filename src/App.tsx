@@ -7,7 +7,7 @@ import extension from "@theatre/r3f/dist/extension";
 import studio from "@theatre/studio";
 import { UI } from "./UI/UI";
 import { useEffect, useRef, useState } from "react";
-import { Canvas, extend } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { ACESFilmicToneMapping } from "three";
 import { Leva } from "leva";
 import { Loader, useProgress } from "@react-three/drei";
