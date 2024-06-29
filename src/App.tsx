@@ -13,6 +13,7 @@ import { Leva } from "leva";
 import { Loader, useProgress } from "@react-three/drei";
 
 import projectState from "./assets/theatre-project-state.json";
+import { Perf } from "r3f-perf";
 
 export type Transitions = Record<string, [from: number, to: number]>;
 export enum TransitionNames {
@@ -102,6 +103,7 @@ const App = () => {
         shadows
         dpr={[1, 1.5]}
       >
+        <Perf />
         <SheetProvider sheet={mainSheet}>
           <Scene
             isAnimating={currentScreen !== targetScreen}

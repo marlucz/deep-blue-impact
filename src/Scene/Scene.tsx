@@ -5,6 +5,7 @@ import { Reef } from "../Components/Reef";
 import { SeaTurtle } from "../Components/SeaTurtle";
 import { Portal } from "../Components/Portal";
 import { TransitionNames } from "../App";
+import { Fishes } from "../Components/Fishes";
 
 const Scene = ({
   isAnimating,
@@ -20,12 +21,16 @@ const Scene = ({
       <Settings isAnimating={isAnimating} />
       <Suspense fallback={null}>
         <Reef key={"reef"} />
-        <SeaTurtle isAnimating={isAnimating} />
+        {(currentScreen === TransitionNames.Intro ||
+          currentScreen === TransitionNames.Home) && (
+          <SeaTurtle isAnimating={isAnimating} />
+        )}
         <Portal
           currentScreen={currentScreen}
           isAnimating={isAnimating}
           targetScreen={targetScreen}
         />
+        <Fishes range={200} />
       </Suspense>
     </>
   );
