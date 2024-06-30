@@ -14,6 +14,7 @@ import { Loader, useProgress } from "@react-three/drei";
 
 import projectState from "./assets/theatre-project-state.json";
 import { Perf } from "r3f-perf";
+import { BubbleLoader } from "./Components/BubbleLoader";
 
 export type Transitions = Record<string, [from: number, to: number]>;
 export enum TransitionNames {
@@ -86,7 +87,7 @@ const App = () => {
 
   return (
     <>
-      <Loader />
+      <BubbleLoader />
       <Leva collapsed />
       <UI
         currentScreen={currentScreen}
