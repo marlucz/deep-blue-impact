@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 
 import { Settings } from "./Settings";
-import { Reef } from "../Components/Reef";
 import { SeaTurtle } from "../Components/SeaTurtle";
 import { Portal } from "../Components/Portal";
 import { TransitionNames } from "../App";
 import { Fishes } from "../Components/Fishes";
+import { ReefHealthy, ReefInstances } from "../Components/Reef/ReefHealthy";
 
 const Scene = ({
   isAnimating,
@@ -20,9 +20,12 @@ const Scene = ({
     <>
       <Settings />
       <Suspense fallback={null}>
-        <Reef key={"reef"} />
+        <ReefInstances>
+          <ReefHealthy />
+        </ReefInstances>
         {(currentScreen === TransitionNames.Intro ||
-          currentScreen === TransitionNames.Home) && (
+          currentScreen === TransitionNames.Home ||
+          targetScreen === TransitionNames.Home) && (
           <SeaTurtle isAnimating={isAnimating} />
         )}
         <Portal

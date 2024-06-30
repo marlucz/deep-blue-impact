@@ -50,6 +50,7 @@ export const SeaTurtle = ({ isAnimating, ...props }: TurtleProps) => {
   useEffect(() => {
     setTimeout(() => {
       if (!actions[SWIM_CYCLE_ACTION]) return;
+      actions[SWIM_CYCLE_ACTION].startAt(0.5);
       actions[SWIM_CYCLE_ACTION].play();
       actions[SWIM_CYCLE_ACTION].paused = !isAnimating;
     });

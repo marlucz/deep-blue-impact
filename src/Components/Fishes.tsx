@@ -53,7 +53,7 @@ const getRandomPointInEllipsoid = (
 
 const tempObject = new Object3D();
 
-const FishesImpl: React.FC<FishesImplProps> = ({ range = 200 }) => {
+export const FishesImpl = ({ range = 200 }: FishesImplProps) => {
   const fishesRef = useRef<InstancedMesh>(null);
 
   const curvePoints = useMemo(
@@ -250,4 +250,4 @@ const FishesImpl: React.FC<FishesImplProps> = ({ range = 200 }) => {
 
 export const Fishes = memo(FishesImpl);
 
-useGLTF.preload("/clown_fish.glb");
+useGLTF.preload("/fish.glb");

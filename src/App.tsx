@@ -101,9 +101,9 @@ const App = () => {
           preserveDrawingBuffer: true,
         }}
         shadows
-        dpr={[1, 1.5]}
+        dpr={[0.5, 1]}
       >
-        <Perf />
+        {!isProd && <Perf />}
         <SheetProvider sheet={mainSheet}>
           <Scene
             isAnimating={currentScreen !== targetScreen}
