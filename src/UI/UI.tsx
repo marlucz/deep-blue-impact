@@ -42,7 +42,7 @@ export const UI = ({
                 }}
               >
                 <h1
-                  className="flex flex-col items-end uppercase font-bold text-[9rem] leading-tight font-['Raleway']"
+                  className="flex flex-col items-end uppercase font-bold text-6xl xl:text-[9rem] leading-tight font-['Raleway']"
                   style={{
                     WebkitTextStroke: "2px #e5faff",
                     WebkitTextFillColor: "transparent",
@@ -277,7 +277,7 @@ export const UI = ({
                 exit={{
                   opacity: 0,
                 }}
-                className="flex flex-col font-bold text-[6rem] leading-tight"
+                className="flex flex-col font-bold text-3xl lg:text-[6rem] leading-tight"
               >
                 Which Reef Do You Choose?
               </motion.h2>

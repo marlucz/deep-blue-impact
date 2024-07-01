@@ -122,11 +122,11 @@ const App = () => {
           />
         </SheetProvider>
       </Canvas>
-      <div className="absolute bottom-10 right-10 z-50 flex flex-col gap-2">
-        <div className="flex gap-1">
+      <div className="absolute bottom-5 right-5 z-50 flex flex-col gap-2 text-xs lg:text-base">
+        <div className="flex gap-1 items-center">
           Sound:
           <button
-            className="cursor-pointer "
+            className="cursor-pointer scale-75 lg:scale-100"
             onClick={() => setIsPlaying((val) => !val)}
           >
             {isPlaying ? <SoundIcon /> : <NoSoundIcon />}

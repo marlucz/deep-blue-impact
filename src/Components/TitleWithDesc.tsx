@@ -29,7 +29,7 @@ const TitleWithDesc: React.FC<TitleWithDescProps> = ({
             duration: 0.8,
           },
         }}
-        className="flex flex-col uppercase font-semibold text-[6rem] leading-tight"
+        className="flex flex-col uppercase font-semibold text-2xl lg:text-[6rem] leading-tight"
       >
         {title}
       </motion.h2>
@@ -43,7 +43,7 @@ const TitleWithDesc: React.FC<TitleWithDescProps> = ({
             duration: 0.4,
           },
         }}
-        className="mt-8 text-[#e5faff] font-bold"
+        className="mt-8 text-[#e5faff] text-xs lg:text-sm xl:text-base font-bold"
       >
         {text}
       </motion.span>
