@@ -4,7 +4,7 @@ export const useSound = ({ play }: { play: boolean }) => {
   const envMusic = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const audio = new Audio("depth-152401.mp3");
+    const audio = new Audio("deep-water-adventure.mp3");
     audio.preload = "auto";
     audio.loop = true;
 
