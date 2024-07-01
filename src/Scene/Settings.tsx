@@ -24,8 +24,14 @@ export const Settings = ({ isEffects }: { isEffects: boolean }) => {
   });
 
   const { intensity, angle } = useControls("Lighting", {
-    intensity: { min: 0, max: 100, value: 30, step: 0.01, label: "intensity" },
-    angle: { min: 0, max: 1, value: 1, step: 0.01, label: "angle" },
+    intensity: {
+      min: 0,
+      max: 100,
+      value: isEffects ? 30 : 5,
+      step: 0.01,
+      label: "intensity",
+    },
+    angle: { min: 0, max: 1, value: 0.6, step: 0.01, label: "angle" },
   });
 
   const cameraTargetRef = useRef<Mesh>(null);
@@ -88,23 +94,28 @@ export const Settings = ({ isEffects }: { isEffects: boolean }) => {
         <meshStandardMaterial roughness={1} color="yellow" />
       </e.mesh>
       <EffectComposer>
-        <Vignette eskil={false} offset={0.1} darkness={0.7} />
-        <Noise opacity={0.05} />
-        <BrightnessContrast brightness={-0.03} contrast={-0.05} />
-        <ToneMapping averageLuminance={0.5} middleGrey={3} />
-        <Bloom
-          intensity={2}
-          luminanceThreshold={0.7}
-          luminanceSmoothing={0.1}
-          mipmapBlur
-        />
+        {isEffects && (
+          <>
+            <Vignette eskil={false} offset={0.1} darkness={0.7} />
+            <Noise opacity={0.05} />
+            <Bloom
+              intensity={2}
+              luminanceThreshold={0.7}
+              luminanceSmoothing={0.1}
+              mipmapBlur
+            />
 
-        <Autofocus
-          target={focusTargetRef.current}
-          smoothTime={0.1}
-          focusRange={4}
-          bokehScale={10}
-        />
+            <Autofocus
+              target={focusTargetRef.current}
+              smoothTime={0.1}
+              focusRange={4}
+              bokehScale={10}
+            />
+          </>
+        )}
+
+        <ToneMapping averageLuminance={0.5} middleGrey={3} />
+        <BrightnessContrast brightness={-0.03} contrast={-0.05} />
       </EffectComposer>
     </>
   );
