@@ -56,12 +56,11 @@ const App = () => {
   const [targetScreen, setTargetScreen] = useState<TransitionNames>(
     TransitionNames.Home
   );
-  const { loaded } = useProgress();
+  const { loaded, progress } = useProgress();
   const isSetup = useRef(false);
 
   useEffect(() => {
-    if (loaded) {
-      console.log("loaded");
+    if (progress === 100 && loaded) {
       project.ready.then(() => {
         if (currentScreen === targetScreen) {
           return;
@@ -77,15 +76,29 @@ const App = () => {
           return;
         }
 
-        mainSheet.sequence
-          .play({
-            range: transition,
-            direction: "normal",
-            rate: 1,
-          })
-          .then(() => {
-            setCurrentScreen(targetScreen);
-          });
+        if (currentScreen === TransitionNames.Intro) {
+          setTimeout(() => {
+            mainSheet.sequence
+              .play({
+                range: transition,
+                direction: "normal",
+                rate: 1,
+              })
+              .then(() => {
+                setCurrentScreen(targetScreen);
+              });
+          }, 1000);
+        } else {
+          mainSheet.sequence
+            .play({
+              range: transition,
+              direction: "normal",
+              rate: 1,
+            })
+            .then(() => {
+              setCurrentScreen(targetScreen);
+            });
+        }
       });
     }
   }, [targetScreen, loaded]);

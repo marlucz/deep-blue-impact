@@ -49,7 +49,7 @@ export const SeaTurtle = ({ isAnimating, ...props }: TurtleProps) => {
 
   useEffect(() => {
     if (!actions[SWIM_CYCLE_ACTION]) return;
-    actions[SWIM_CYCLE_ACTION].startAt(0.4);
+    // actions[SWIM_CYCLE_ACTION].startAt(0.4);
     actions[SWIM_CYCLE_ACTION].play();
     actions[SWIM_CYCLE_ACTION].paused = !isAnimating;
   }, [isAnimating]);
