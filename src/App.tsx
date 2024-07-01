@@ -97,7 +97,7 @@ const App = () => {
   return (
     <>
       <BubbleLoader />
-      <Leva collapsed />
+      <Leva collapsed hidden />
       <UI
         currentScreen={currentScreen}
         targetScreen={targetScreen}
