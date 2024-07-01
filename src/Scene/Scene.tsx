@@ -1,24 +1,25 @@
-import { Suspense } from "react";
-
 import { Settings } from "./Settings";
 import { SeaTurtle } from "../Components/SeaTurtle";
 import { Portal } from "../Components/Portal";
 import { TransitionNames } from "../App";
 import { Fishes } from "../Components/Fishes";
 import { ReefHealthy, ReefInstances } from "../Components/Reef/ReefHealthy";
+import { Suspense } from "react";
 
 const Scene = ({
   isAnimating,
   currentScreen,
   targetScreen,
+  isEffects,
 }: {
   isAnimating: boolean;
   currentScreen: TransitionNames;
   targetScreen: TransitionNames;
+  isEffects: boolean;
 }) => {
   return (
     <>
-      <Settings />
+      <Settings isEffects={isEffects} />
       <Suspense fallback={null}>
         <ReefInstances>
           <ReefHealthy />
@@ -33,7 +34,7 @@ const Scene = ({
           isAnimating={isAnimating}
           targetScreen={targetScreen}
         />
-        <Fishes range={200} />
+        <Fishes range={isEffects ? 200 : 100} />
       </Suspense>
     </>
   );

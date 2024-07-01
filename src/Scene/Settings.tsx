@@ -14,8 +14,7 @@ import { Mesh, Vector3 } from "three";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import GodraysMaterialImpl from "../Components/GodRays";
-
-export const Settings = () => {
+export const Settings = ({ isEffects }: { isEffects: boolean }) => {
   const { x, y, z, zoom } = useControls("Camera", {
     x: { min: -20, max: 20, value: 1.18, step: 0.01, label: "x" },
     y: { min: -20, max: 20, value: 4.46, step: 0.01, label: "y" },
@@ -68,7 +67,7 @@ export const Settings = () => {
         theatreKey={"Camera"}
         lookAt={cameraTargetRef}
       >
-        <GodraysMaterialImpl />
+        {isEffects && <GodraysMaterialImpl />}
       </PerspectiveCamera>
       <e.mesh
         theatreKey="Camera Target"

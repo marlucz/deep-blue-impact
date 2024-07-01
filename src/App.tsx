@@ -10,11 +10,15 @@ import { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ACESFilmicToneMapping } from "three";
 import { Leva } from "leva";
-import { Loader, useProgress } from "@react-three/drei";
+import { useProgress } from "@react-three/drei";
+
+import SoundIcon from "./assets/sound.svg?react";
+import NoSoundIcon from "./assets/no-sound.svg?react";
 
 import projectState from "./assets/theatre-project-state.json";
-import { Perf } from "r3f-perf";
+
 import { BubbleLoader } from "./Components/BubbleLoader";
+import { useSound } from "./useSound";
 
 export type Transitions = Record<string, [from: number, to: number]>;
 export enum TransitionNames {
@@ -52,11 +56,12 @@ const App = () => {
   const [targetScreen, setTargetScreen] = useState<TransitionNames>(
     TransitionNames.Home
   );
-  const { progress } = useProgress();
+  const { loaded } = useProgress();
   const isSetup = useRef(false);
 
   useEffect(() => {
-    if (progress === 100) {
+    if (loaded) {
+      console.log("loaded");
       project.ready.then(() => {
         if (currentScreen === targetScreen) {
           return;
@@ -83,7 +88,11 @@ const App = () => {
           });
       });
     }
-  }, [targetScreen, progress]);
+  }, [targetScreen, loaded]);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isEffects, setIsEffects] = useState(true);
+  useSound({ play: isPlaying });
 
   return (
     <>
@@ -104,15 +113,32 @@ const App = () => {
         shadows
         dpr={[0.5, 1]}
       >
-        {!isProd && <Perf />}
         <SheetProvider sheet={mainSheet}>
           <Scene
             isAnimating={currentScreen !== targetScreen}
             currentScreen={currentScreen}
             targetScreen={targetScreen}
+            isEffects={isEffects}
           />
         </SheetProvider>
       </Canvas>
+      <div className="absolute bottom-10 right-10 z-50 flex flex-col gap-2">
+        <div className="flex gap-1">
+          Sound:
+          <button
+            className="cursor-pointer "
+            onClick={() => setIsPlaying((val) => !val)}
+          >
+            {isPlaying ? <SoundIcon /> : <NoSoundIcon />}
+          </button>
+        </div>
+        <div className="flex gap-1">
+          Effects:
+          <button onClick={() => setIsEffects((val) => !val)}>
+            {isEffects ? "on" : "off"}
+          </button>
+        </div>
+      </div>
     </>
   );
 };

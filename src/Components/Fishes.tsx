@@ -147,7 +147,7 @@ export const FishesImpl = ({ range = 200 }: FishesImplProps) => {
       fishesRef.current.instanceMatrix.needsUpdate = true;
     }
   }, []);
-  console.log(materialRef.current);
+
   useFrame((state) => {
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;

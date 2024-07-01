@@ -3,14 +3,19 @@ import { motion } from "framer-motion";
 type NauticButtonProps = {
   text: string;
   onClick: () => void;
+  animate?: boolean;
 };
 
-export const NauticButton = ({ text, onClick }: NauticButtonProps) => {
+export const NauticButton = ({
+  text,
+  onClick,
+  animate = true,
+}: NauticButtonProps) => {
   return (
     <motion.div
       className="gap-3 mt-12"
       initial={{
-        y: 80,
+        y: animate ? 80 : 0,
         opacity: 0,
       }}
       animate={{

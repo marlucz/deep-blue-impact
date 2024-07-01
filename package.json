@@ -24,7 +24,8 @@
     "react-dom": "^18.2.0",
     "three": "^0.165.0",
     "three-custom-shader-material": "^5.4.0",
-    "three-stdlib": "^2.30.3"
+    "three-stdlib": "^2.30.3",
+    "vite-plugin-svgr": "^4.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

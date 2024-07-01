@@ -27,85 +27,88 @@ export const UI = ({
           {[currentScreen, targetScreen].every(
             (screen) => screen === TransitionNames.Home
           ) && (
-            <motion.div
-              key={TransitionNames.Home}
-              className="flex flex-col col-start-8 col-span-3"
-              exit={{
-                y: -1000,
-                opacity: 0,
-                transition: {
-                  duration: 2,
-                  delay: 0.5,
-                  ease: "easeInOut",
-                },
-              }}
-            >
-              <h1
-                className="flex flex-col items-end uppercase font-bold text-[9rem] leading-tight font-['Raleway']"
-                style={{
-                  WebkitTextStroke: "2px #e5faff",
-                  WebkitTextFillColor: "transparent",
+            <>
+              <motion.div
+                key={TransitionNames.Home}
+                className="flex flex-col col-start-8 col-span-3"
+                exit={{
+                  y: -1000,
+                  opacity: 0,
+                  transition: {
+                    duration: 2,
+                    delay: 0.5,
+                    ease: "easeInOut",
+                  },
                 }}
               >
-                <motion.span
-                  initial={{
-                    y: -80,
-                    opacity: 0,
-                  }}
-                  animate={{
-                    y: 0,
-                    opacity: 1,
-                    transition: {
-                      duration: 1.5,
-                    },
-                  }}
-                >
-                  save
-                </motion.span>
-                <motion.span
-                  initial={{
-                    y: -80,
-                    opacity: 0,
-                  }}
-                  animate={{
-                    y: 0,
-                    opacity: 1,
-                    transition: {
-                      delay: 0.3,
-                      duration: 1.2,
-                    },
-                  }}
-                >
-                  the
-                </motion.span>
-                <motion.span
-                  initial={{
-                    x: 80,
-                    opacity: 0,
-                  }}
-                  animate={{
-                    x: 0,
-                    opacity: 1,
-                    transition: {
-                      delay: 0.8,
-                      duration: 0.4,
-                    },
-                  }}
-                  className="tracking-wide"
+                <h1
+                  className="flex flex-col items-end uppercase font-bold text-[9rem] leading-tight font-['Raleway']"
                   style={{
-                    WebkitTextFillColor: "#e5faff",
+                    WebkitTextStroke: "2px #e5faff",
+                    WebkitTextFillColor: "transparent",
                   }}
                 >
-                  deep
-                </motion.span>
-              </h1>
-              <div className="absolute bottom-10 left-0 w-full z-15 flex justify-center items-center">
-                <NauticButton
-                  text="Discover the impact"
-                  onClick={() => onScreenChange(TransitionNames.Bleaching)}
-                />
-              </div>
-            </motion.div>
+                  <motion.span
+                    initial={{
+                      y: -80,
+                      opacity: 0,
+                    }}
+                    animate={{
+                      y: 0,
+                      opacity: 1,
+                      transition: {
+                        duration: 1.5,
+                      },
+                    }}
+                  >
+                    save
+                  </motion.span>
+                  <motion.span
+                    initial={{
+                      y: -80,
+                      opacity: 0,
+                    }}
+                    animate={{
+                      y: 0,
+                      opacity: 1,
+                      transition: {
+                        delay: 0.3,
+                        duration: 1.2,
+                      },
+                    }}
+                  >
+                    the
+                  </motion.span>
+                  <motion.span
+                    initial={{
+                      x: 80,
+                      opacity: 0,
+                    }}
+                    animate={{
+                      x: 0,
+                      opacity: 1,
+                      transition: {
+                        delay: 0.8,
+                        duration: 0.4,
+                      },
+                    }}
+                    className="tracking-wide"
+                    style={{
+                      WebkitTextFillColor: "#e5faff",
+                    }}
+                  >
+                    deep
+                  </motion.span>
+                </h1>
+
+                <div className="absolute bottom-10 left-0 w-full z-15 flex justify-center items-center">
+                  <NauticButton
+                    text="Discover the impact"
+                    onClick={() => onScreenChange(TransitionNames.Bleaching)}
+                  />
+                </div>
+              </motion.div>
+            </>
           )}
 
           {[currentScreen, targetScreen].every(
